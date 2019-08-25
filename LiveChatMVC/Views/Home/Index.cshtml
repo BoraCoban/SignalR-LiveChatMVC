@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/css/ui.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <script>
+        dto = { ID = 2974, BaseObject = "VVM_Test_Case" };
+        $u = JSON.parse('{"SID":"4234|e0f85017408341f1bd2f1a1702b158a9909ba54ee0f54a4181b4bada20af46d4","UID":1,"FNAME":"Administrator","UNAME":"administrator","ROLE":"1","ROLEMARK":{"SET.m_rolename":"Administration","SET.m_rolecode":"Administration","SET.m_unlimited_menu":"True","SET.m_studio_admin":"True","SET.m_sys_admin":"True","SET.id":"1","KEY.m_created_by":"Administrator","SET.m_created_by":"1","SET.m_created_dt":"2014 - 06 - 02 13: 11: 04.0930000","KEY.m_last_mod_by":"Eray Erdoğan","SET.m_last_mod_by":"19060","SET.m_last_mod_dt":"2019 - 08 - 21 11: 09: 00.0000000","SET.m_active":"True","SET.m_private":"False","SET.p_show_portal":"False","SET.m_limited_permission":"False","num":"1"},"GROUPS":[],"TID":4234,"TNAME":"Mirror","LID":100000,"LCODE":"tr - TR","AET":true}');
+    </script>
+
+    <div class="box" id="online">
+        <input type="hidden" id="hdUserName" />
+        <!--  <i class="fa fa-user-tie"></i>-->
+    </div>
+
+    <!-- <div id="unlock">
+         <i class="fa fa-unlock lock"></i>
+     </div>
+
+
+     <div id="lock" style="display:none">
+         <i class="fa fa-lock lock"></i>
+     </div>-->
+
+    <div id="chat-window" class="chatbox chatbox22 chatbox--tray">
+
+
+
+        <div id="chat-title" class="chatbox__title">
+
+            <h5 id="title"><a href="#">Leave a message</a></h5>
+
+
+            <div id="message-alert1" style="display:none">
+                <a href="#" class="notification">
+                    <i class="fas fa-bell"></i>
+                    <span id="message-count1" class="badge adge-danger p-1 message-count"></span>
+                </a>
+
+            </div>
+
+            <span class="glyphicon glyphicon-volume-off sound" id="music-off" style="display:none"></span>
+            <span class="glyphicon glyphicon-volume-up sound" id="music-on"></span>
+
+            <span class="glyphicon glyphicon-eye-close eye" id="eye-off" style="display:none"></span>
+            <span class="glyphicon glyphicon-eye-open eye" id="eye-on"></span>
+            <span class="glyphicon glyphicon-arrow-left aa" id="arrow-left"></span>
+            <span class="glyphicon glyphicon-arrow-right aa" id="arrow-right" style="display:none"></span>
+
+
+            <div id="message-alert" style="display:none">
+                <i class="fas fa-comments alert-icon" id="icon"></i>
+                <span id="message-count" class="badge badge-danger p-1 message-count">2</span>
+            </div>
+
+        </div>
+
+
+        <div class="chatbox__body" id="chat_body">
+            <div id="new-message-alert">
+                <i class="glyphicon glyphicon-arrow-down"></i>
+                <span class="badge badge-success" id="unread-message-count">1</span>
+            </div>
+
+
+            <div id="more">
+                <i class="glyphicon glyphicon-option-horizontal"></i>
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+
+        <div class="panel-footer message-footer">
+            <div class="input-group">
+                <input id="btn-input" type="text" class="form-control input-sm chat_set_height" placeholder="Type your message here..." tabindex="0" dir="ltr" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" contenteditable="true" />
+
+                <span class="input-group-btn">
+                    <button class="btn btn-primary btn-sm" id="btn-chat" style="padding:10px">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs/"></script>
+    <!--<script>
+
+            /*!
+    * ASP.NET SignalR JavaScript Library v2.3.0-rtm
+    * http://signalr.net/
+    *
+    * Copyright (c) .NET Foundation. All rights reserved.
+    * Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+    *
+    */
+
+            /// <reference path="..\..\SignalR.Client.JS\Scripts\jquery-1.6.4.js" />
+            /// <reference path="jquery.signalR.js" />
+            (function ($, window, undefined) {
+                /// <param name="$" type="jQuery" />
+                "use strict";
+
+                if (typeof ($.signalR) !== "function") {
+                    throw new Error("SignalR: SignalR is not loaded. Please ensure jquery.signalR-x.js is referenced before ~/signalr/js.");
+                }
+
+                var signalR = $.signalR;
+
+                function makeProxyCallback(hub, callback) {
+                    return function () {
+                        // Call the client hub method
+                        callback.apply(hub, $.makeArray(arguments));
+                    };
+                }
+
+                function registerHubProxies(instance, shouldSubscribe) {
+                    var key, hub, memberKey, memberValue, subscriptionMethod;
+
+                    for (key in instance) {
+                        if (instance.hasOwnProperty(key)) {
+                            hub = instance[key];
+
+                            if (!(hub.hubName)) {
+                                // Not a client hub
+                                continue;
+                            }
+
+                            if (shouldSubscribe) {
+                                // We want to subscribe to the hub events
+                                subscriptionMethod = hub.on;
+                            } else {
+                                // We want to unsubscribe from the hub events
+                                subscriptionMethod = hub.off;
+                            }
+
+                            // Loop through all members on the hub and find client hub functions to subscribe/unsubscribe
+                            for (memberKey in hub.client) {
+                                if (hub.client.hasOwnProperty(memberKey)) {
+                                    memberValue = hub.client[memberKey];
+
+                                    if (!$.isFunction(memberValue)) {
+                                        // Not a client hub function
+                                        continue;
+                                    }
+
+                                    // Use the actual user-provided callback as the "identity" value for the registration.
+                                    subscriptionMethod.call(hub, memberKey, makeProxyCallback(hub, memberValue), memberValue);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $.hubConnection.prototype.createHubProxies = function () {
+                    var proxies = {};
+                    this.starting(function () {
+                        // Register the hub proxies as subscribed
+                        // (instance, shouldSubscribe)
+                        registerHubProxies(proxies, true);
+
+                        this._registerSubscribedHubs();
+                    }).disconnected(function () {
+                        // Unsubscribe all hub proxies when we "disconnect".  This is to ensure that we do not re-add functional call backs.
+                        // (instance, shouldSubscribe)
+                        registerHubProxies(proxies, false);
+                    });
+
+                    proxies['chatHub'] = this.createHubProxy('chatHub');
+                    proxies['chatHub'].client = {};
+                    proxies['chatHub'].server = {
+                        connect: function (senderToken) {
+                            return proxies['chatHub'].invoke.apply(proxies['chatHub'], $.merge(["Connect"], $.makeArray(arguments)));
+                        },
+
+                        send: function (message) {
+                            return proxies['chatHub'].invoke.apply(proxies['chatHub'], $.merge(["Send"], $.makeArray(arguments)));
+                        }
+                    };
+
+                    return proxies;
+                };
+
+                signalR.hub = $.hubConnection("/signalr", { useDefaultPath: false });
+                signalR.hub.baseUrl = "https://localhost:44374";
+                $.extend(signalR, signalR.hub.createHubProxies());
+                console.log("a", $.hubConnection,signalR.hub)
+
+            }(window.jQuery, window));
+
+
+        </script>-->
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/script.js"></script>
+
+</body>
+</html>
